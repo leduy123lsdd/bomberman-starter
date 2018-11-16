@@ -27,6 +27,7 @@ public class Bomber extends Character {
         _bombs = _board.getBombs();
         _input = _board.getInput();
         _sprite = Sprite.player_right;
+
     }
 
     @Override
@@ -111,6 +112,7 @@ public class Bomber extends Character {
     protected void calculateMove() {
         // TODO: xử lý nhận tín hiệu điều khiển hướng đi từ _input và gọi move() để thực hiện di chuyển
         // TODO: nhớ cập nhật lại giá trị cờ _moving khi thay đổi trạng thái di chuyển
+
     }
 
     @Override
@@ -123,6 +125,7 @@ public class Bomber extends Character {
     public void move(double xa, double ya) {
         // TODO: sử dụng canMove() để kiểm tra xem có thể di chuyển tới điểm đã tính toán hay không và thực hiện thay đổi tọa độ _x, _y
         // TODO: nhớ cập nhật giá trị _direction sau khi di chuyển
+
     }
 
     @Override
