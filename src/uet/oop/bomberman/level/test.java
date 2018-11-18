@@ -8,9 +8,9 @@ import java.util.Scanner;
 public class test {
 
     public static char[][] _map;
-    private int _height,_width,_level;
+    private  int _height,_width,_level;
 
-    public void level_row_column(String levelFilePath){
+    public  void level_row_column(String levelFilePath){
         int[] data = new int[3];
         try {
             File file = new File(levelFilePath);
@@ -52,17 +52,13 @@ public class test {
 
     public static void main(String[] args) {
         test x = new test();
-        String path = "res/levels/Level1.txt";
+        String path = "res/levels/Level" + 1 + ".txt";
         x.level_row_column(path);
-        System.out.println("level:" + x._level + " "  + "row:" + x._height + " " + "column:" + x._width);
-
-        for(int i = 0;i < x._height;i++) {
+        for (int i = 0;i< x._height;i++){
             String a = "";
-            for (int j = 0; j < x._width; j++) {
-                //System.out.println(map[i][j]);
+            for(int j = 0;j < x._width;j++)
                 a = a + _map[i][j];
-            }
-            System.out.println(a + i);
+            System.out.println(a);
         }
     }
 }

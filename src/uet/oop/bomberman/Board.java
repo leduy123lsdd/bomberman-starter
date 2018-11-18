@@ -141,7 +141,6 @@ public class Board implements IRender {
 	}
 	
 	public Entity getEntity(double x, double y, Character m) {
-		
 		Entity res = null;
 		
 		res = getFlameSegmentAt((int)x, (int)y);
@@ -223,6 +222,8 @@ public class Board implements IRender {
 	}
 	
 	public Entity getEntityAt(double x, double y) {
+		System.out.println((int)x + (int)y * _levelLoader.getWidth());
+		System.out.println(_levelLoader.getWidth());
 		return _entities[(int)x + (int)y * _levelLoader.getWidth()];
 	}
 	

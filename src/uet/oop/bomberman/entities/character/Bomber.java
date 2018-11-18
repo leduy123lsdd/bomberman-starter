@@ -4,9 +4,11 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Bomb;
+import uet.oop.bomberman.entities.tile.Tile;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
+import uet.oop.bomberman.level.Coordinates;
 
 import java.util.Iterator;
 import java.util.List;
@@ -45,7 +47,6 @@ public class Bomber extends Character {
 
         calculateMove();
 
-        detectPlaceBomb();
     }
 
     @Override
@@ -82,7 +83,6 @@ public class Bomber extends Character {
 
     private void clearBombs() {
         Iterator<Bomb> bs = _bombs.iterator();
-
         Bomb b;
         while (bs.hasNext()) {
             b = bs.next();
@@ -113,12 +113,44 @@ public class Bomber extends Character {
         // TODO: xử lý nhận tín hiệu điều khiển hướng đi từ _input và gọi move() để thực hiện di chuyển
         // TODO: nhớ cập nhật lại giá trị cờ _moving khi thay đổi trạng thái di chuyển
 
+        double xCurrentObject = this.getX();
+        double yCurrentObject = this.getY();
+        boolean pressKey = true;
+
+        if(_input.down) {
+            yCurrentObject += Game.getBomberSpeed();
+        } else if(_input.up) {
+            yCurrentObject -= Game.getBomberSpeed();
+        } else if(_input.left) {
+            xCurrentObject -= Game.getBomberSpeed();
+        } else if(_input.right) {
+            xCurrentObject += Game.getBomberSpeed();
+        } else {
+            pressKey = false;
+            _moving = false;
+        }
+
+        if (pressKey){
+            _moving = true;
+            move(xCurrentObject,yCurrentObject);
+        }
+
     }
 
     @Override
     public boolean canMove(double x, double y) {
         // TODO: kiểm tra có đối tượng tại vị trí chuẩn bị di chuyển đến và có thể di chuyển tới đó hay không
-        return false;
+        boolean result;
+
+        x = Coordinates.pixelToTile(x);
+        y = Coordinates.pixelToTile(y);
+        Entity entityAt = _board.getEntity(x, y, this);
+
+        if(!entityAt.collide(this)) {
+            result = false;
+        } else result = true;
+
+        return result;
     }
 
     @Override
@@ -126,6 +158,22 @@ public class Bomber extends Character {
         // TODO: sử dụng canMove() để kiểm tra xem có thể di chuyển tới điểm đã tính toán hay không và thực hiện thay đổi tọa độ _x, _y
         // TODO: nhớ cập nhật giá trị _direction sau khi di chuyển
 
+        double xPositionBeforeMoving = this.getX();
+        double yPositionBeforeMoving = this.getY();
+
+        if (canMove(xa, ya)) {
+            _x = xa;
+            _y = ya;
+        }
+
+        if (xa > xPositionBeforeMoving) // Right
+            _direction = 1;
+        if (xa < xPositionBeforeMoving) // Left
+            _direction = 3;
+        if (ya > yPositionBeforeMoving) // Down
+            _direction = 2;
+        if (ya < yPositionBeforeMoving) // Up
+            _direction = 0;
     }
 
     @Override
