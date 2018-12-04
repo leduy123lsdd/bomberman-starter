@@ -10,6 +10,7 @@ import uet.oop.bomberman.entities.character.Character;
 import uet.oop.bomberman.entities.character.enemy.ai.AI;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.Coordinates;
 
 import java.awt.*;
@@ -28,7 +29,7 @@ public abstract class Enemy extends Character {
 	protected int _finalAnimation = 30;
 	protected Sprite _deadSprite;
 	
-	public Enemy(int x, int y, Board board, Sprite dead, double speed, int points) {
+	public Enemy(int x, int y, Board board, Sprite dead, double speed, int points){
 		super(x, y, board);
 		
 		_points = points;
@@ -79,26 +80,66 @@ public abstract class Enemy extends Character {
 		// TODO: sử dụng canMove() để kiểm tra xem có thể di chuyển tới điểm đã tính toán hay không
 		// TODO: sử dụng move() để di chuyển
 		// TODO: nhớ cập nhật lại giá trị cờ _moving khi thay đổi trạng thái di chuyển
+
+		int xa = 0, ya = 0;
+		if(_ai.calculateDirection() == 1) { //right
+			xa++;
+		} else if (_ai.calculateDirection() == 3) { //left
+			xa--;
+		} else if (_ai.calculateDirection() == 2) { //down
+			ya++;
+		} else if(_ai.calculateDirection() == 0) { //up
+			ya--;
+		}
+
+		if(xa != 0 || ya != 0)  {
+			move(xa , ya);
+			_moving = true;
+		} else {
+			_moving = false;
+		}
+
 	}
 	
 	@Override
 	public void move(double xa, double ya) {
+
 		if(!_alive) return;
-		_y += ya;
-		_x += xa;
+
+		if(canMove(0, ya)) { _y += ya; }
+		if(canMove(xa, 0)) { _x += xa; }
+
+		if(xa > 0) _direction = 1; // right
+		if(xa < 0) _direction = 3; // left
+		if(ya > 0) _direction = 2; // down
+		if(ya < 0) _direction = 0; // up
 	}
 	
 	@Override
 	public boolean canMove(double x, double y) {
 		// TODO: kiểm tra có đối tượng tại vị trí chuẩn bị di chuyển đến và có thể di chuyển tới đó hay không
-		return false;
+		for (int c = 0; c < 4; c++) {
+			double xt = ((_x + x) + c % 2 * 11) / Game.TILES_SIZE;
+			double yt = ((_y + y) + c / 2 * 12 - 13) / Game.TILES_SIZE;
+
+			Entity a = _board.getEntity(xt, yt, this);
+
+			if(!a.collide(this))
+				return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean collide(Entity e) {
 		// TODO: xử lý va chạm với Flame
 		// TODO: xử lý va chạm với Bomber
-		return true;
+		if(e instanceof Flame || e instanceof Bomber) {
+			kill();
+			return true;
+		}
+
+		return false;
 	}
 	
 	@Override

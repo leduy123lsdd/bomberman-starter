@@ -18,6 +18,7 @@ import uet.oop.bomberman.graphics.Sprite;
 
 
 import java.io.*;
+import java.net.URL;
 import java.util.Scanner;
 
 
@@ -97,7 +98,10 @@ public class FileLevelLoader extends LevelLoader {
 	 */
 	public void LOAD_level_height_width_map(int level){
 		try {
-			File file = new File("res/levels/Level" + level + ".txt");
+
+			ClassLoader classLoader = getClass().getClassLoader();
+			File file = new File(classLoader.getResource("levels/Level"+level+".txt").getFile());
+
 			Scanner reader = new Scanner(file);
 			//Read level, height and width of map.
 			while (reader.hasNextInt()) {
@@ -154,7 +158,7 @@ public class FileLevelLoader extends LevelLoader {
 				pos,
 				new LayeredEntity(x,y,
 						new Grass(x,y,Sprite.grass),
-						new Portal(x,y,Sprite.portal),
+						new Portal(x,y,Sprite.portal,_board),
 						new Brick(x,y,Sprite.brick)
 				)
 		);
