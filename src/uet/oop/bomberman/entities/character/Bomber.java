@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities.character;
 
+import javafx.css.Size;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.Entity;
@@ -131,25 +132,34 @@ public class Bomber extends Character {
         // TODO: nhớ cập nhật lại giá trị cờ _moving khi thay đổi trạng thái di chuyển
 
         int xa = 0, ya = 0;
+
         if (_input.up) {
             ya--;
         }
-        if(_input.down) {
+        else if(_input.down) {
             ya++;
         }
-        if (_input.left) {
+        else if (_input.left) {
             xa--;
         }
-        if (_input.right) {
+        else if (_input.right) {
             xa++;
+        } else {
+            int xPixel = Coordinates.tileToPixel(getXTile());
+            int yPixel = Coordinates.tileToPixel(getYTile() + 1);
+
+            _x = xPixel;
+            _y = yPixel;
         }
 
         if(xa != 0 || ya != 0)  {
             move(xa * Game.getBomberSpeed() , ya * Game.getBomberSpeed());
+            //middle();
             _moving = true;
         } else {
             _moving = false;
         }
+
 
     }
 
@@ -172,8 +182,12 @@ public class Bomber extends Character {
         // TODO: sử dụng canMove() để kiểm tra xem có thể di chuyển tới điểm đã tính toán hay không và thực hiện thay đổi tọa độ _x, _y
         // TODO: nhớ cập nhật giá trị _direction sau khi di chuyển
 
-        if(canMove(0, ya)) { _y += ya; }
-        if(canMove(xa, 0)) { _x += xa; }
+        if(canMove(0, ya)) {
+            _y += ya;
+        }
+        if(canMove(xa, 0)) {
+            _x += xa;
+        }
 
         if(xa > 0) _direction = 1; // right
         if(xa < 0) _direction = 3; // left
@@ -186,11 +200,13 @@ public class Bomber extends Character {
     public boolean collide(Entity e) {
         // TODO: xử lý va chạm với Flame
         // TODO: xử lý va chạm với Enemy
-        if(e instanceof Flame || e instanceof Enemy) {
+        if(e instanceof Flame) {
             kill();
-            return true;
         }
-        return false;
+        if (e instanceof Enemy) {
+            kill();
+        }
+        return true;
     }
 
     private void chooseSprite() {
@@ -228,4 +244,11 @@ public class Bomber extends Character {
         }
     }
 
+    private void middle(){
+        int xPixel = Coordinates.tileToPixel(getYTile());
+        int yPixel = Coordinates.tileToPixel(getXTile() + 1);
+
+        _x = xPixel;
+        _y = yPixel;
+    }
 }
