@@ -13,7 +13,7 @@ public class Balloon extends Enemy {
 		
 		_sprite = Sprite.balloom_left1;
 		
-		_ai = new AILow();
+		_ai = new AILow(_board);
 		_direction = _ai.calculateDirection();
 	}
 

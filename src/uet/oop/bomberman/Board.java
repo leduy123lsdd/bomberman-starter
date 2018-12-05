@@ -22,6 +22,7 @@ import java.util.List;
  * Quản lý thao tác điều khiển, load level, render các màn hình của game
  */
 public class Board implements IRender {
+	static int directionOfEnemy = 0;
 	protected LevelLoader _levelLoader;
 	protected Game _game;
 	protected Keyboard _input;

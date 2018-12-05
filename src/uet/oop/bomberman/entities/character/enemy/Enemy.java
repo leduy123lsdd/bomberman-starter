@@ -42,7 +42,7 @@ public abstract class Enemy extends Character {
 		_timeAfter = 20;
 		_deadSprite = dead;
 	}
-	
+
 	@Override
 	public void update() {
 		animate();
@@ -81,7 +81,11 @@ public abstract class Enemy extends Character {
 		// TODO: sử dụng move() để di chuyển
 		// TODO: nhớ cập nhật lại giá trị cờ _moving khi thay đổi trạng thái di chuyển
 
+
+
 		int xa = 0, ya = 0;
+
+
 		if(_ai.calculateDirection() == 1) { //right
 			xa++;
 		} else if (_ai.calculateDirection() == 3) { //left
@@ -91,7 +95,6 @@ public abstract class Enemy extends Character {
 		} else if(_ai.calculateDirection() == 0) { //up
 			ya--;
 		}
-
 		if(xa != 0 || ya != 0)  {
 			move(xa , ya);
 			_moving = true;
@@ -134,7 +137,7 @@ public abstract class Enemy extends Character {
 	public boolean collide(Entity e) {
 		// TODO: xử lý va chạm với Flame
 		// TODO: xử lý va chạm với Bomber
-		if(e instanceof Flame || e instanceof Bomber) {
+		if(e instanceof Flame) {
 			kill();
 			return true;
 		}

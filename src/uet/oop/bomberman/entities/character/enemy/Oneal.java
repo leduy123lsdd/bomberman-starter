@@ -5,6 +5,7 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.character.enemy.ai.AIMedium;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.level.Coordinates;
 
 public class Oneal extends Enemy {
 	
@@ -13,7 +14,7 @@ public class Oneal extends Enemy {
 		
 		_sprite = Sprite.oneal_left1;
 		
-		_ai = new AIMedium(_board.getBomber(), this);
+		_ai = new AIMedium(_board.getBomber(), this,_board);
 		_direction  = _ai.calculateDirection();
 	}
 	
@@ -35,5 +36,33 @@ public class Oneal extends Enemy {
 					_sprite = Sprite.oneal_left1;
 				break;
 		}
+	}
+	@Override
+	public void calculateMove(){
+		int xa = 0, ya = 0;
+		if(_ai.calculateDirection() == 1) { //right
+			xa++;
+		} else if (_ai.calculateDirection() == 3) { //left
+			xa--;
+		} else if (_ai.calculateDirection() == 2) { //down
+			ya++;
+		} else if(_ai.calculateDirection() == 0) { //up
+			ya--;
+		}
+		if(xa != 0 || ya != 0)  {
+			move(xa , ya);
+			_moving = true;
+		} else {
+			_moving = false;
+		}
+
+		if(_board.getTime() % 4 == 0) {
+			int xPixel = Coordinates.tileToPixel(getXTile());
+			int yPixel = Coordinates.tileToPixel(getYTile() + 1);
+
+			_x = xPixel;
+			_y = yPixel;
+		}
+
 	}
 }

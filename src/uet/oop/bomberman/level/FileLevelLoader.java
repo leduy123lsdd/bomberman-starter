@@ -4,7 +4,7 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.character.Bomber;
-import uet.oop.bomberman.entities.character.enemy.Balloon;
+import uet.oop.bomberman.entities.character.enemy.*;
 import uet.oop.bomberman.entities.tile.Grass;
 import uet.oop.bomberman.entities.tile.Portal;
 import uet.oop.bomberman.entities.tile.Wall;
@@ -68,6 +68,19 @@ public class FileLevelLoader extends LevelLoader {
 
 					case '1': //balloon
 						addBalloon(x,y,pos);
+						break;
+
+					case '2':
+						addOnereal(x,y,pos);
+						break;
+					case '3':
+						addDoll(x,y,pos);
+						break;
+					case '4':
+						addMinvo(x,y,pos);
+						break;
+					case '5':
+						addDoria(x,y,pos);
 						break;
 
 					case 'b': //bomb item
@@ -175,6 +188,34 @@ public class FileLevelLoader extends LevelLoader {
 		Screen.setOffset(0, 0);
 		_board.addEntity(pos, new Grass(xBalloon, yBalloon, Sprite.grass));
 	}
+	private void addOnereal(int x,int y,int pos){
+		int xOnereal = x, yOnereal = y;
+		_board.addCharacter( new Oneal(Coordinates.tileToPixel(xOnereal), Coordinates.tileToPixel(yOnereal) + Game.TILES_SIZE, _board) );
+		Screen.setOffset(0, 0);
+		_board.addEntity(pos, new Grass(xOnereal, yOnereal, Sprite.grass));
+	}
+
+	private void addDoria(int x,int y,int pos){
+		int xOnereal = x, yOnereal = y;
+		_board.addCharacter( new Doria(Coordinates.tileToPixel(xOnereal), Coordinates.tileToPixel(yOnereal) + Game.TILES_SIZE, _board) );
+		Screen.setOffset(0, 0);
+		_board.addEntity(pos, new Grass(xOnereal, yOnereal, Sprite.grass));
+	}
+
+	private void addDoll(int x,int y,int pos){
+		int xOnereal = x, yOnereal = y;
+		_board.addCharacter( new Doll(Coordinates.tileToPixel(xOnereal), Coordinates.tileToPixel(yOnereal) + Game.TILES_SIZE, _board) );
+		Screen.setOffset(0, 0);
+		_board.addEntity(pos, new Grass(xOnereal, yOnereal, Sprite.grass));
+	}
+
+	private void addMinvo(int x,int y,int pos){
+		int xOnereal = x, yOnereal = y;
+		_board.addCharacter( new Minvo(Coordinates.tileToPixel(xOnereal), Coordinates.tileToPixel(yOnereal) + Game.TILES_SIZE, _board) );
+		Screen.setOffset(0, 0);
+		_board.addEntity(pos, new Grass(xOnereal, yOnereal, Sprite.grass));
+	}
+
 	private void addBombItem(int x,int y,int pos){
 		_board.addEntity(pos,
 				new LayeredEntity(x, y,
@@ -196,7 +237,8 @@ public class FileLevelLoader extends LevelLoader {
 		_board.addEntity(pos,
 				new LayeredEntity(x,y,
 						new Grass(x,y,Sprite.grass),
-						new SpeedItem(x,y,Sprite.powerup_speed)
+						new SpeedItem(x,y,Sprite.powerup_speed),
+						new Brick(x,y,Sprite.brick)
 				)
 		);
 	}
